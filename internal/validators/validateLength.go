@@ -1,7 +1,8 @@
 package validators
 
-import "fmt"
-
-func ValidateLength() {
-	fmt.Println("eef")
+func ValidateLength(str string) bool {
+	if len(str) < 3 || len(str) > 15 {
+		return false
+	}
+	return true
 }
