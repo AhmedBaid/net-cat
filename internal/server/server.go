@@ -45,13 +45,9 @@ func Server(conn net.Conn) {
 	utils.MU.Lock()
 	utils.Clients[conn] = username
 	utils.MU.Unlock()
-
 	helpers.Broadcasting(fmt.Sprintf("\n%s has joined the chat... 👋\n", username), conn)
-	helpers.Broadcasting(fmt.Sprintf("[%s] [%s]: ", Time, username), conn)
 
 	for {
-		conn.Write([]byte(fmt.Sprintf("[%s] [%s]: ", Time, username)))
-
 		message, err := bufio.NewReader(conn).ReadString('\n')
 		if err != nil {
 			fmt.Println("Client disconnected:", err)
@@ -61,7 +57,6 @@ func Server(conn net.Conn) {
 		message = strings.TrimSpace(message)
 
 		helpers.Broadcasting(fmt.Sprintf("\n[%s] [%s]: %s\n", Time, username, message), conn)
-		helpers.Broadcasting(fmt.Sprintf("[%s] [%s]: ", Time, username), conn)
 	}
 
 	utils.MU.Lock()
