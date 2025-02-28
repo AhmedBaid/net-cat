@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net"
 	"strings"
-	"time"
 
 	"chat-app/internal/helpers"
 	"chat-app/internal/validators"
@@ -16,12 +15,12 @@ func Server(conn net.Conn) {
 	conn.Write([]byte(utils.WelcomeMessage))
 	var username string
 	var err error
-	for {
 
+	for {
 		username, err = bufio.NewReader(conn).ReadString('\n')
-		fmt.Println("eded", username)
 		if err != nil {
 			fmt.Println("Error reading username:", err)
+			CloseConnection(conn, "")
 			return
 		}
 		username = strings.TrimSpace(username)
@@ -40,28 +39,35 @@ func Server(conn net.Conn) {
 
 		break
 	}
-	Time := time.Now().Format("2006-01-02 15:04:05")
 
 	utils.MU.Lock()
 	utils.Clients[conn] = username
 	utils.MU.Unlock()
+
 	helpers.Broadcasting(fmt.Sprintf("\n%s has joined the chat... 👋\n", username), conn)
 
 	for {
 		message, err := bufio.NewReader(conn).ReadString('\n')
 		if err != nil {
 			fmt.Println("Client disconnected:", err)
-			break
+			CloseConnection(conn, username)
+			return
 		}
 
 		message = strings.TrimSpace(message)
-
-		helpers.Broadcasting(fmt.Sprintf("\n[%s] [%s]: %s\n", Time, username, message), conn)
+		helpers.Broadcasting(fmt.Sprintf("\n[%s] [%s]: %s\n", utils.Time, username, message), conn)
 	}
+}
 
+func CloseConnection(conn net.Conn, username string) {
 	utils.MU.Lock()
-	delete(utils.Clients, conn)
+	if username != "" {
+		helpers.Broadcasting(fmt.Sprintf("\n%s has left the chat... 🚪\n", username), conn)
+		delete(utils.Clients, conn)
+	}
+	utils.Counter--
+	fmt.Println("final:", utils.Counter)
 	utils.MU.Unlock()
-	helpers.Broadcasting(fmt.Sprintf("\n%s has left the chat... 🚪", username), conn)
+
 	conn.Close()
 }
