@@ -33,7 +33,7 @@ func main() {
 			return
 		}
 		utils.MU.Lock()
-		if utils.Counter > 2 {
+		if utils.Counter > 10 {
 			conn.Write([]byte("Chat is full. Try later...\n"))
 			conn.Close()
 			utils.MU.Unlock()
