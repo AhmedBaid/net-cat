@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net"
 	"strings"
+	"time"
 
 	"chat-app/internal/helpers"
 	"chat-app/internal/validators"
@@ -25,15 +26,10 @@ func Server(conn net.Conn) {
 		}
 		username = strings.TrimSpace(username)
 
-		if !validators.Valid(username) {
-			conn.Write([]byte("Only letters are allowed in the username.\n"))
-			conn.Write([]byte("Enter your name: "))
-			continue
-		}
-
-		if !validators.ValidateLength(username) {
-			conn.Write([]byte("Username must be between 3 and 15 characters.\n"))
-			conn.Write([]byte("Enter your name: "))
+		if !validators.ValidName(username) || !validators.ValidateLength(username) || !validators.SameName(username) {
+			conn.Write([]byte("Invalid username...\n"))
+			time.Sleep(1 * time.Second)
+			conn.Write([]byte("Enter your name again : "))
 			continue
 		}
 
@@ -44,7 +40,7 @@ func Server(conn net.Conn) {
 	utils.Clients[conn] = username
 	utils.MU.Unlock()
 
-	helpers.Broadcasting(fmt.Sprintf("\n%s has joined the chat... 👋\n", username), conn)
+	helpers.Broadcasting(utils.Green+fmt.Sprintf("\n%s has joined the chat...\n"+utils.Reset, username), conn)
 
 	for {
 		message, err := bufio.NewReader(conn).ReadString('\n')
@@ -53,8 +49,12 @@ func Server(conn net.Conn) {
 			CloseConnection(conn, username)
 			return
 		}
-
 		message = strings.TrimSpace(message)
+		if !validators.ValidMessage(message) || !validators.ValidateLengthMessage(message) {
+			time.Sleep(1 * time.Second)
+			conn.Write([]byte(fmt.Sprintf("[%s] [%s]:", utils.Time, username)))
+			continue
+		}
 		helpers.Broadcasting(fmt.Sprintf("\n[%s] [%s]: %s\n", utils.Time, username, message), conn)
 	}
 }
@@ -62,12 +62,10 @@ func Server(conn net.Conn) {
 func CloseConnection(conn net.Conn, username string) {
 	utils.MU.Lock()
 	if username != "" {
-		helpers.Broadcasting(fmt.Sprintf("\n%s has left the chat... 🚪\n", username), conn)
+		helpers.Broadcasting(utils.Red+fmt.Sprintf("\n%s has left the chat...\n"+utils.Reset, username), conn)
 		delete(utils.Clients, conn)
 	}
 	utils.Counter--
-	fmt.Println("final:", utils.Counter)
 	utils.MU.Unlock()
-
 	conn.Close()
 }
