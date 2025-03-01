@@ -36,4 +36,6 @@ const (
 	Red   = "\033[31m"
 	Green = "\033[32m"
 	Reset = "\033[0m"
+	Orange = "\033[38;5;208m"
+	Cyan   = "\033[36m"
 )
