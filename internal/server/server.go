@@ -16,7 +16,6 @@ func Server(conn net.Conn) {
 	conn.Write([]byte(utils.WelcomeMessage))
 	var username string
 	var err error
-
 	for {
 		username, err = bufio.NewReader(conn).ReadString('\n')
 		if err != nil {
@@ -38,10 +37,13 @@ func Server(conn net.Conn) {
 
 	utils.MU.Lock()
 	utils.Clients[conn] = username
+	for _, message := range utils.History {
+		conn.Write([]byte(message))
+	}
 	utils.MU.Unlock()
 
 	helpers.Broadcasting(utils.Green+fmt.Sprintf("\n%s has joined the chat...\n"+utils.Reset, username), conn)
-
+utils.History=append(utils.History,utils.Green+fmt.Sprintf("\n%s has joined the chat...\n"+utils.Reset, username))
 	for {
 		message, err := bufio.NewReader(conn).ReadString('\n')
 		if err != nil {
@@ -55,6 +57,14 @@ func Server(conn net.Conn) {
 			conn.Write([]byte(fmt.Sprintf("[%s] [%s]:", utils.Time, username)))
 			continue
 		}
+
+		fmt.Println("len", len(utils.Clients))
+		
+utils.MU.Lock()
+		utils.History = append(utils.History, fmt.Sprintf("[%s] [%s]: %s\n", utils.Time, username, message))
+		utils.MU.Unlock()
+fmt.Println("history", utils.History)
+
 		helpers.Broadcasting(fmt.Sprintf("\n[%s] [%s]: %s\n", utils.Time, username, message), conn)
 	}
 }

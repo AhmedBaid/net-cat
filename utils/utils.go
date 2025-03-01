@@ -11,6 +11,8 @@ var (
 	Counter = 1
 	MU      sync.Mutex
 	Clients = make(map[net.Conn]string)
+	 History  []string
+
 
 	WelcomeMessage = "Welcome to TCP-Chat!\n" +
 		"         _nnnn_\n" +
