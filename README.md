@@ -1,4 +1,4 @@
-# Chat App
+# Net-Cat
 
 A simple TCP-based chat application built using Golang. This project allows multiple clients to connect to a server and communicate in real time.
 
@@ -8,6 +8,7 @@ A simple TCP-based chat application built using Golang. This project allows mult
 - Welcome message broadcasted to all users when a new user joins
 - Message timestamps
 - Proper handling of client disconnections
+- Server logging system
 
 ## Installation & Setup
 
@@ -16,36 +17,34 @@ A simple TCP-based chat application built using Golang. This project allows mult
 
 ### Clone the Repository
 ```sh
-git clone https://github.com/yourusername/chat-app.git
-cd chat-app
+git clone https://github.com/yourusername/net-cat.git
+cd net-cat
 ```
 
 ### Run the Server
 ```sh
-go run cmd/server/main.go
-```
-
-### Run the Client
-Open multiple terminals and run:
-```sh
-go run cmd/client/main.go
+go run TCPchat/main.go
 ```
 
 ## Project Structure
 ```
-chat-app/
-├── cmd/
-│   ├── server/
-│   │   └── main.go
-│   ├── client/
-│   │   └── main.go
+NET-CAT/
 ├── internal/
 │   ├── helpers/
-│   │   ├── broadcast.go
+│   │   ├── Broadcating.go
+│   ├── logger/
+│   │   ├── logger.go
+│   ├── server/
+│   │   ├── server.go
 │   ├── validators/
-│   │   ├── input.go
+│   │   ├── validators.go
+├── TCPchat/
+│   ├── main.go
 ├── utils/
-│   ├── globals.go
+│   ├── utils.go
+├── .gitignore
+├── go.mod
+├── network.md
 ├── README.md
 ```
 
