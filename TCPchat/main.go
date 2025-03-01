@@ -44,7 +44,7 @@ func main() {
 			return
 		}
 		utils.MU.Lock()
-		if utils.Counter > 2 {
+		if utils.Counter > 10 {
 			logger.InfoLogger.Println("Chat is full. Try later...")
 			conn.Write([]byte("Chat is full. Try later...\n"))
 			conn.Close()
