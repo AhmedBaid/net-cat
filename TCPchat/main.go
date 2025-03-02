@@ -13,10 +13,11 @@ import (
 func main() {
 	logFile, err := logger.Logger()
 	if err != nil {
-		fmt.Println("Error setting up log file:", err)
+		fmt.Println("Erreur lors de la configuration du fichier de log:", err)
 		return
 	}
 	defer logFile.Close()
+
 	port := ":8989"
 	if len(os.Args) > 2 {
 		logger.ErrorLogger.Println("[USAGE]: ./TCPChat $port")

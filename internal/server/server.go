@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"chat-app/internal/helpers"
+	"chat-app/internal/helper"
 	"chat-app/internal/logger"
 	"chat-app/internal/validators"
 	"chat-app/utils"
@@ -45,7 +45,6 @@ func Server(conn net.Conn) {
 			conn.Write([]byte("Enter your name again: "))
 			continue
 		}
-
 		break
 	}
 
@@ -56,7 +55,7 @@ func Server(conn net.Conn) {
 	}
 	utils.MU.Unlock()
 	logger.InfoLogger.Printf("✅ %s has joined the chat...", username)
-	helpers.Broadcasting(utils.Green+fmt.Sprintf("\n%s has join the chat...\n"+utils.Reset, username), conn)
+	helper.Broadcasting(utils.Green+fmt.Sprintf("\n%s has join the chat...\n"+utils.Reset, username), conn)
 
 	utils.History = append(utils.History, utils.Green+fmt.Sprintf("%s has joined the chat...\n"+utils.Reset, username))
 	for {
@@ -78,7 +77,7 @@ func Server(conn net.Conn) {
 		utils.History = append(utils.History, fmt.Sprintf("[%s] [%s]: %s\n", utils.Time, username, message))
 		utils.MU.Unlock()
 
-		helpers.Broadcasting(fmt.Sprintf("\n[%s] [%s]: %s\n", utils.Time, username, message), conn)
+		helper.Broadcasting(fmt.Sprintf("\n[%s] [%s]: %s\n", utils.Time, username, message), conn)
 	}
 }
 
@@ -87,7 +86,7 @@ func CloseConnection(conn net.Conn, username string) {
 	if username != "" {
 		logger.InfoLogger.Printf("🚪 %s has left the chat...", username)
 		utils.History = append(utils.History, utils.Red+fmt.Sprintf("%s has left the chat...\n"+utils.Reset, username))
-		helpers.Broadcasting(utils.Red+fmt.Sprintf("\n%s has left the chat...\n"+utils.Reset, username), conn)
+		helper.Broadcasting(utils.Red+fmt.Sprintf("\n%s has left the chat...\n"+utils.Reset, username), conn)
 		delete(utils.Clients, conn)
 	}
 	utils.Counter--
