@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net"
 	"strings"
-	"time"
 
 	"chat-app/internal/helper"
 	"chat-app/internal/logger"
@@ -29,19 +28,16 @@ func Server(conn net.Conn) {
 
 		if !validators.ValidName(username) {
 			conn.Write([]byte(utils.Yellow + "Invalid username... Only printable characters allowed\n" + utils.Reset))
-			time.Sleep(1 * time.Second)
 			conn.Write([]byte("Enter your name again: "))
 			continue
 		}
 		if !validators.ValidateLength(username) {
 			conn.Write([]byte(utils.Yellow + "Invalid username... The name should be between 3 and 15 letters\n" + utils.Reset))
-			time.Sleep(1 * time.Second)
 			conn.Write([]byte("Enter your name again: "))
 			continue
 		}
 		if !validators.SameName(username) {
 			conn.Write([]byte(utils.Yellow + "Invalid username... The name already exists\n" + utils.Reset))
-			time.Sleep(1 * time.Second)
 			conn.Write([]byte("Enter your name again: "))
 			continue
 		}
@@ -68,7 +64,6 @@ func Server(conn net.Conn) {
 		}
 		message = strings.TrimSpace(message)
 		if !validators.ValidMessage(message) || !validators.ValidateLengthMessage(message) {
-			time.Sleep(1 * time.Second)
 			conn.Write([]byte(fmt.Sprintf("[%s] [%s]:", utils.Time, username)))
 			continue
 		}

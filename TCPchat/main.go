@@ -42,10 +42,10 @@ func main() {
 		if err != nil {
 			logger.ErrorLogger.Println("error in accepting  : ", err)
 			fmt.Println("error in accepting  : ", err)
-			return
+			continue
 		}
 		utils.MU.Lock()
-		if utils.Counter > 10 {
+		if utils.Counter > 2 {
 			logger.InfoLogger.Println("Chat is full. Try later...")
 			conn.Write([]byte(utils.Yellow + "Chat is full. Try later...\n" + utils.Reset))
 			conn.Close()
