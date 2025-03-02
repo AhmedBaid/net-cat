@@ -38,6 +38,8 @@ NET-CAT/
 │   │   ├── server.go
 │   ├── validators/
 │   │   ├── validators.go
+├── logs/
+│   ├── server.log
 ├── TCPchat/
 │   ├── main.go
 ├── utils/
