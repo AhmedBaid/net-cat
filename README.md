@@ -58,12 +58,40 @@ NET-CAT/
 
 ## Example Output
 ```
-Welcome to the chat server!
-Enter your username: Alice
-Welcome 👋 Alice
-[2025-02-26 10:30:00] [Alice]: Hello everyone!
+Welcome to TCP-Chat!
+         _nnnn_
+        dGGGGMMb
+       @p~qp~~qMb
+       M|@||@) M|
+       @,----.JM|
+      JS^\__/  qKL
+     dZP        qKRb
+    dZP          qKKb
+   fZP            SMMb
+   HZM            MMMM
+   FqM            MMMM
+ __| ".        |\dS"qML
+ |    .       | ' \Zq
+_)      \.___.,|     .'
+\____   )MMMMMP|   .'
+     -'       --'
+[ENTER YOUR NAME]:ahmed
+[2025-03-02 11:41:28] [ahmed]: 
 ```
-
+```
+ahmed has joined the chat...
+[2025-03-02 11:41:18] [ahmed]: hello
+[2025-03-02 11:41:18] [ahmed]: salam
+reda has joined the chat...
+[2025-03-02 11:41:18] [reda]: bikhir
+[2025-03-02 11:41:18] [reda]: hanya
+[2025-03-02 11:41:18] [ahmed]: lahfdek
+[2025-03-02 11:42:28] [aymen]: 
+reda has left the chat...
+[2025-03-02 11:42:30] [aymen]: 
+ahmed has left the chat...
+[2025-03-02 11:42:31] [aymen]: 
+```
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
