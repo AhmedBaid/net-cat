@@ -1,4 +1,4 @@
-# Net-Cat
+# Net-Cat-App
 
 A simple TCP-based chat application built using Golang. This project allows multiple clients to connect to a server and communicate in real time.
 
